@@ -4,7 +4,7 @@ require_once 'config/db.php';
 requireLogin();
 requireAdmin();
 
-// Admin actions
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $action = $_POST['action'] ?? '';
 
