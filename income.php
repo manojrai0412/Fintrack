@@ -98,7 +98,7 @@ $incomeCategories = ['Salary','Freelance','Business','Investment','Rental','Gift
 </main>
 </div>
 
-<!-- Add Modal -->
+
 <div class="modal-overlay" id="addTxModal">
     <div class="modal">
         <div class="modal-header"><h2 class="modal-title">Add Income</h2><button class="modal-close" onclick="closeModal('addTxModal')">✕</button></div>
@@ -116,7 +116,7 @@ $incomeCategories = ['Salary','Freelance','Business','Investment','Rental','Gift
     </div>
 </div>
 
-<!-- Edit Modal -->
+
 <div class="modal-overlay" id="editTxModal">
     <div class="modal">
         <div class="modal-header"><h2 class="modal-title">Edit Income</h2><button class="modal-close" onclick="closeModal('editTxModal')">✕</button></div>
