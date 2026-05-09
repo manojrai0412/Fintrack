@@ -4,11 +4,11 @@ require_once 'config/db.php';
 
 if (isLoggedIn()) { header('Location: index.php'); exit; }
 
-$step    = 'email'; // email → verify → reset
+$step    = 'email'; /
 $message = '';
 $error   = '';
 
-// Step 1: Submit email
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['step_email'])) {
     $email = sanitize($_POST['email'] ?? '');
     if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
@@ -28,7 +28,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['step_email'])) {
             $message = "A reset token has been generated. <br><strong>Demo token (normally sent via email):</strong><br><code style='word-break:break-all;font-size:12px;'>{$token}</code>";
             $step = 'verify';
         } else {
-            // Don't reveal if email exists
+           
             $_SESSION['reset_email'] = $email;
             $message = "If that email exists, a reset link has been sent.";
             $step = 'verify';
@@ -36,7 +36,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['step_email'])) {
     }
 }
 
-// Step 2: Verify token
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['step_verify'])) {
     $inputToken = trim($_POST['token'] ?? '');
     $email = $_SESSION['reset_email'] ?? '';
@@ -97,7 +97,7 @@ elseif (isset($_SESSION['reset_email']) && $step === 'email') $step = 'verify';
         <span class="logo-text">FinTrack</span>
     </div>
 
-    <!-- Step Indicator -->
+  
     <div style="display:flex;gap:8px;align-items:center;margin-bottom:24px;">
         <?php foreach(['email'=>'1. Email','verify'=>'2. Verify','reset'=>'3. Reset'] as $s=>$label): ?>
         <div style="flex:1;text-align:center;">
