@@ -67,11 +67,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
-// Fetch all data
+
 $users = $conn->query("SELECT u.*, (SELECT COUNT(*) FROM transactions WHERE user_id=u.id) as tx_count FROM users u ORDER BY u.created_at DESC")->fetchAll();
 $transactions = $conn->query("SELECT t.*, u.name as user_name, u.email as user_email FROM transactions t JOIN users u ON t.user_id=u.id ORDER BY t.date DESC, t.id DESC LIMIT 100")->fetchAll();
 
-// Stats
+
 $totalUsers    = count($users);
 $totalTx       = $conn->query("SELECT COUNT(*) FROM transactions")->fetchColumn();
 $totalIncome   = $conn->query("SELECT COALESCE(SUM(amount),0) FROM transactions WHERE type='income'")->fetchColumn();
@@ -101,7 +101,7 @@ $incomeCategories  = ['Salary','Freelance','Business','Investment','Rental','Gif
     </div>
     <?php flash(); ?>
 
-    <!-- Admin Stats -->
+
     <div class="stat-grid" style="margin-bottom:24px;">
         <div class="stat-card blue"><div class="stat-label blue">Total Users</div><div class="stat-value"><?= $totalUsers ?></div></div>
         <div class="stat-card amber"><div class="stat-label amber">Total Transactions</div><div class="stat-value"><?= $totalTx ?></div></div>
@@ -114,7 +114,7 @@ $incomeCategories  = ['Salary','Freelance','Business','Investment','Rental','Gif
         <button class="tab-btn" data-tab="tab-transactions">💳 Transactions (<?= min($totalTx,100) ?>)</button>
     </div>
 
-    <!-- USERS TAB -->
+   
     <div class="tab-content active" id="tab-users">
         <div class="card">
             <div class="card-body">
