@@ -7,7 +7,7 @@ $uid = $_SESSION['user_id'];
 $year  = (int)($_GET['year']  ?? date('Y'));
 $month = $_GET['month'] ?? '';
 
-// Build filter
+
 $where  = "WHERE user_id=?";
 $params = [$uid];
 if ($month) {
@@ -27,7 +27,7 @@ $expense->execute($params); $totalExpense = $expense->fetchColumn();
 $txStmt = $conn->prepare("SELECT * FROM transactions $where ORDER BY date DESC, id DESC");
 $txStmt->execute($params); $txs = $txStmt->fetchAll();
 
-// Monthly summary (for yearly view)
+
 $monthlySummary = [];
 if (!$month) {
     for ($m = 1; $m <= 12; $m++) {
@@ -62,7 +62,6 @@ $years = range(date('Y'), date('Y')-5);
     </div>
     <?php flash(); ?>
 
-    <!-- Filters -->
     <div class="filter-row">
         <form method="GET" style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;">
             <select name="year">
@@ -78,7 +77,6 @@ $years = range(date('Y'), date('Y')-5);
         </form>
     </div>
 
-    <!-- Summary Stats -->
     <div class="stat-grid" style="margin-bottom:20px;">
         <div class="stat-card green"><div class="stat-label green">Total Income</div><div class="stat-value"><?= formatINR($totalIncome) ?></div></div>
         <div class="stat-card red"><div class="stat-label red">Total Expenses</div><div class="stat-value"><?= formatINR($totalExpense) ?></div></div>
@@ -86,7 +84,6 @@ $years = range(date('Y'), date('Y')-5);
         <div class="stat-card amber"><div class="stat-label amber">Transactions</div><div class="stat-value"><?= count($txs) ?></div></div>
     </div>
 
-    <!-- Monthly Breakdown (yearly view) -->
     <?php if (!$month && !empty($monthlySummary)): ?>
     <div class="card" style="margin-bottom:20px;">
         <div class="card-header"><div class="card-title">Monthly Breakdown — <?= $year ?></div></div>
@@ -109,7 +106,6 @@ $years = range(date('Y'), date('Y')-5);
     </div>
     <?php endif; ?>
 
-    <!-- All Transactions -->
     <div class="card">
         <div class="card-header">
             <div class="card-title">All Transactions</div>
