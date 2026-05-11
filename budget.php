@@ -4,7 +4,6 @@ require_once 'config/db.php';
 requireLogin();
 $uid = $_SESSION['user_id'];
 
-// Handle budget actions
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $action = $_POST['action'] ?? '';
     if ($action === 'add_budget') {
@@ -13,7 +12,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $month  = (int)$_POST['month'];
         $year   = (int)$_POST['year'];
         if ($cat && $amount > 0 && $month && $year) {
-            // Upsert
+
             $existing = $conn->prepare("SELECT id FROM budgets WHERE user_id=? AND category=? AND month=? AND year=?");
             $existing->execute([$uid,$cat,$month,$year]);
             if ($existing->fetch()) {
@@ -35,7 +34,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 $selMonth = (int)($_GET['month'] ?? date('n'));
 $selYear  = (int)($_GET['year']  ?? date('Y'));
 
-// Get budgets with actual spending
+
 $budgets = $conn->prepare("SELECT b.*, COALESCE((SELECT SUM(amount) FROM transactions WHERE user_id=b.user_id AND type='expense' AND category=b.category AND MONTH(date)=b.month AND YEAR(date)=b.year),0) as spent FROM budgets b WHERE b.user_id=? AND b.month=? AND b.year=? ORDER BY b.category");
 $budgets->execute([$uid,$selMonth,$selYear]);
 $budgetList = $budgets->fetchAll();
@@ -65,7 +64,7 @@ $years  = range(date('Y')+1, date('Y')-3);
     </div>
     <?php flash(); ?>
 
-    <!-- Month/Year filter -->
+   
     <div class="filter-row">
         <form method="GET" style="display:flex;gap:10px;">
             <select name="month">
@@ -119,7 +118,7 @@ $years  = range(date('Y')+1, date('Y')-3);
 </main>
 </div>
 
-<!-- Add Budget Modal -->
+
 <div class="modal-overlay" id="addBudgetModal">
     <div class="modal">
         <div class="modal-header"><h2 class="modal-title">Set Budget</h2><button class="modal-close" onclick="closeModal('addBudgetModal')">✕</button></div>
