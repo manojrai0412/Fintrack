@@ -3,6 +3,8 @@ require_once 'includes/auth.php';
 require_once 'config/db.php';
 requireLogin();
 $uid = $_SESSION['user_id'];
+
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $action = $_POST['action'] ?? '';
     if ($action === 'add_budget') {
@@ -11,6 +13,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $month  = (int)$_POST['month'];
         $year   = (int)$_POST['year'];
         if ($cat && $amount > 0 && $month && $year) {
+            // Upsert
             $existing = $conn->prepare("SELECT id FROM budgets WHERE user_id=? AND category=? AND month=? AND year=?");
             $existing->execute([$uid,$cat,$month,$year]);
             if ($existing->fetch()) {
@@ -28,11 +31,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         redirect('budget.php','Budget deleted.');
     }
 }
+
 $selMonth = (int)($_GET['month'] ?? date('n'));
 $selYear  = (int)($_GET['year']  ?? date('Y'));
+
+
 $budgets = $conn->prepare("SELECT b.*, COALESCE((SELECT SUM(amount) FROM transactions WHERE user_id=b.user_id AND type='expense' AND category=b.category AND MONTH(date)=b.month AND YEAR(date)=b.year),0) as spent FROM budgets b WHERE b.user_id=? AND b.month=? AND b.year=? ORDER BY b.category");
 $budgets->execute([$uid,$selMonth,$selYear]);
 $budgetList = $budgets->fetchAll();
+
 $expenseCategories = ['Food','Rent','Transport','Shopping','Bills','Entertainment','Health','Education','Fuel','Subscriptions','Others'];
 $months = ['January','February','March','April','May','June','July','August','September','October','November','December'];
 $years  = range(date('Y')+1, date('Y')-3);
@@ -57,6 +64,8 @@ $years  = range(date('Y')+1, date('Y')-3);
         <button class="btn btn-primary" onclick="openModal('addBudgetModal')">＋ Set Budget</button>
     </div>
     <?php flash(); ?>
+
+    
     <div class="filter-row">
         <form method="GET" style="display:flex;gap:10px;">
             <select name="month">
@@ -68,6 +77,7 @@ $years  = range(date('Y')+1, date('Y')-3);
             <button type="submit" class="btn btn-secondary btn-sm">View</button>
         </form>
     </div>
+
     <?php if (empty($budgetList)): ?>
     <div class="card"><div class="card-body-pad">
         <div class="empty-state"><div class="empty-icon">🎯</div><p>No budgets set for <?= $months[$selMonth-1].' '.$selYear ?>. Click "Set Budget" to get started.</p></div>
@@ -108,6 +118,8 @@ $years  = range(date('Y')+1, date('Y')-3);
     <?php endif; ?>
 </main>
 </div>
+
+
 <div class="modal-overlay" id="addBudgetModal">
     <div class="modal">
         <div class="modal-header"><h2 class="modal-title">Set Budget</h2><button class="modal-close" onclick="closeModal('addBudgetModal')">✕</button></div>
@@ -129,6 +141,7 @@ $years  = range(date('Y')+1, date('Y')-3);
         </form>
     </div>
 </div>
+
 <?php include 'includes/confirm.php'; ?>
 <script src="assets/js/main.js"></script>
 </body>
