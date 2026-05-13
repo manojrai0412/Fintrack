@@ -4,7 +4,6 @@ require_once 'config/db.php';
 requireLogin();
 $uid = $_SESSION['user_id'];
 
-// Monthly trend (last 12 months)
 $monthly = [];
 for ($i = 11; $i >= 0; $i--) {
     $month = date('Y-m', strtotime("-$i months"));
@@ -16,11 +15,10 @@ for ($i = 11; $i >= 0; $i--) {
     $monthly[] = ['label'=>$label,'income'=>(float)$incVal,'expense'=>(float)$expVal,'savings'=>max(0,(float)$incVal-(float)$expVal)];
 }
 
-// Top expense categories
 $topCats = $conn->prepare("SELECT category, SUM(amount) as total FROM transactions WHERE user_id=? AND type='expense' GROUP BY category ORDER BY total DESC LIMIT 8");
 $topCats->execute([$uid]); $expCats = $topCats->fetchAll();
 
-// Top income categories
+
 $topIncome = $conn->prepare("SELECT category, SUM(amount) as total FROM transactions WHERE user_id=? AND type='income' GROUP BY category ORDER BY total DESC");
 $topIncome->execute([$uid]); $incCats = $topIncome->fetchAll();
 
