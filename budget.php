@@ -4,7 +4,6 @@ require_once 'config/db.php';
 requireLogin();
 $uid = $_SESSION['user_id'];
 
-
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $action = $_POST['action'] ?? '';
     if ($action === 'add_budget') {
@@ -13,7 +12,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $month  = (int)$_POST['month'];
         $year   = (int)$_POST['year'];
         if ($cat && $amount > 0 && $month && $year) {
-            // Upsert
             $existing = $conn->prepare("SELECT id FROM budgets WHERE user_id=? AND category=? AND month=? AND year=?");
             $existing->execute([$uid,$cat,$month,$year]);
             if ($existing->fetch()) {
