@@ -32,12 +32,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 $selMonth = (int)($_GET['month'] ?? date('n'));
 $selYear  = (int)($_GET['year']  ?? date('Y'));
-
-
 $budgets = $conn->prepare("SELECT b.*, COALESCE((SELECT SUM(amount) FROM transactions WHERE user_id=b.user_id AND type='expense' AND category=b.category AND MONTH(date)=b.month AND YEAR(date)=b.year),0) as spent FROM budgets b WHERE b.user_id=? AND b.month=? AND b.year=? ORDER BY b.category");
 $budgets->execute([$uid,$selMonth,$selYear]);
 $budgetList = $budgets->fetchAll();
-
 $expenseCategories = ['Food','Rent','Transport','Shopping','Bills','Entertainment','Health','Education','Fuel','Subscriptions','Others'];
 $months = ['January','February','March','April','May','June','July','August','September','October','November','December'];
 $years  = range(date('Y')+1, date('Y')-3);
@@ -62,8 +59,6 @@ $years  = range(date('Y')+1, date('Y')-3);
         <button class="btn btn-primary" onclick="openModal('addBudgetModal')">＋ Set Budget</button>
     </div>
     <?php flash(); ?>
-
-    
     <div class="filter-row">
         <form method="GET" style="display:flex;gap:10px;">
             <select name="month">
@@ -75,7 +70,6 @@ $years  = range(date('Y')+1, date('Y')-3);
             <button type="submit" class="btn btn-secondary btn-sm">View</button>
         </form>
     </div>
-
     <?php if (empty($budgetList)): ?>
     <div class="card"><div class="card-body-pad">
         <div class="empty-state"><div class="empty-icon">🎯</div><p>No budgets set for <?= $months[$selMonth-1].' '.$selYear ?>. Click "Set Budget" to get started.</p></div>
@@ -126,7 +120,7 @@ $years  = range(date('Y')+1, date('Y')-3);
             <div class="form-group"><label>Category</label>
                 <select name="category" required><?php foreach($expenseCategories as $c): ?><option><?= $c ?></option><?php endforeach; ?></select>
             </div>
-            <div class="form-group"><label>Budget Amount (₹)</label><input type="number" name="amount" min="1" step="0.01" required></div>
+            <div class="form-group"><label>Budget Amount (RS.)</label><input type="number" name="amount" min="1" step="0.01" required></div>
             <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
                 <div class="form-group"><label>Month</label>
                     <select name="month"><?php foreach($months as $i=>$mn): ?><option value="<?= $i+1 ?>"<?= ($i+1)===$selMonth?' selected':'' ?>><?= $mn ?></option><?php endforeach; ?></select>
