@@ -157,7 +157,7 @@ new Chart(trendCtx, {
         plugins:{ legend:{ labels:{ color:'#8b949e', font:{size:12} } } },
         scales:{
             x:{ ticks:{color:'#8b949e'}, grid:{color:'rgba(255,255,255,0.05)'} },
-            y:{ ticks:{color:'#8b949e', callback:v=>'₹'+v.toLocaleString('en-IN')}, grid:{color:'rgba(255,255,255,0.05)'} }
+            y:{ ticks:{color:'#8b949e', callback:v=>'RS.'+v.toLocaleString('en-IN')}, grid:{color:'rgba(255,255,255,0.05)'} }
         }
     }
 });
