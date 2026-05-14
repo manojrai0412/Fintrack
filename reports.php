@@ -39,7 +39,6 @@ if (!$month) {
         if ($i > 0 || $e > 0) $monthlySummary[] = ['month'=>date('F', mktime(0,0,0,$m,1)),'income'=>(float)$i,'expense'=>(float)$e,'savings'=>max(0,(float)$i-(float)$e)];
     }
 }
-
 $years = range(date('Y'), date('Y')-5);
 ?>
 <!DOCTYPE html>
