@@ -105,7 +105,7 @@ $expenseCategories = ['Food','Rent','Transport','Shopping','Bills','Entertainmen
             <div class="form-group"><label>Category</label>
                 <select name="category" required><?php foreach($expenseCategories as $c): ?><option><?= $c ?></option><?php endforeach; ?></select>
             </div>
-            <div class="form-group"><label>Amount (₹)</label><input type="number" name="amount" min="0.01" step="0.01" required></div>
+            <div class="form-group"><label>Amount (RS.)</label><input type="number" name="amount" min="0.01" step="0.01" required></div>
             <div class="form-group"><label>Date</label><input type="date" name="date" value="<?= date('Y-m-d') ?>" required></div>
             <div class="form-group"><label>Description</label><textarea name="description"></textarea></div>
             <div style="display:flex;gap:10px;"><button type="submit" class="btn btn-primary" style="flex:1;">Add Expense</button><button type="button" class="btn btn-secondary" onclick="closeModal('addTxModal')">Cancel</button></div>
@@ -122,7 +122,7 @@ $expenseCategories = ['Food','Rent','Transport','Shopping','Bills','Entertainmen
             <div class="form-group"><label>Category</label>
                 <select name="category" id="edit_category" required><?php foreach($expenseCategories as $c): ?><option><?= $c ?></option><?php endforeach; ?></select>
             </div>
-            <div class="form-group"><label>Amount (₹)</label><input type="number" name="amount" id="edit_amount" min="0.01" step="0.01" required></div>
+            <div class="form-group"><label>Amount (RS.)</label><input type="number" name="amount" id="edit_amount" min="0.01" step="0.01" required></div>
             <div class="form-group"><label>Date</label><input type="date" name="date" id="edit_date" required></div>
             <div class="form-group"><label>Description</label><textarea name="description" id="edit_description"></textarea></div>
             <div style="display:flex;gap:10px;"><button type="submit" class="btn btn-primary" style="flex:1;">Save</button><button type="button" class="btn btn-secondary" onclick="closeModal('editTxModal')">Cancel</button></div>
