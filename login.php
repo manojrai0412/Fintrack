@@ -54,7 +54,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <form method="POST">
         <div class="form-group">
             <label>Email Address</label>
-            <input type="email" name="email" placeholder="you@example.com" value="<?= htmlspecialchars($_POST['email'] ?? '') ?>" required>
+            <input type="email" name="email" placeholder="abc@example.com" value="<?= htmlspecialchars($_POST['email'] ?? '') ?>" required>
         </div>
         <div class="form-group">
             <label>Password</label>
