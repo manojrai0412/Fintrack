@@ -3,8 +3,6 @@ require_once 'includes/auth.php';
 require_once 'config/db.php';
 requireLogin();
 requireAdmin();
-
-
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $action = $_POST['action'] ?? '';
 
@@ -13,18 +11,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if ($id === $_SESSION['user_id']) redirect('admin.php','You cannot delete yourself.','error');
         $conn->prepare("DELETE FROM users WHERE id=?")->execute([$id]);
         redirect('admin.php','User deleted successfully.');
-
     } elseif ($action === 'change_role') {
         $id   = (int)$_POST['id'];
         $role = in_array($_POST['role'],['user','admin']) ? $_POST['role'] : 'user';
         if ($id === $_SESSION['user_id']) redirect('admin.php','You cannot change your own role.','error');
         $conn->prepare("UPDATE users SET role=? WHERE id=?")->execute([$role,$id]);
         redirect('admin.php','User role updated.');
-
     } elseif ($action === 'reset_password') {
         $id   = (int)$_POST['id'];
         $pass = $_POST['new_password'] ?? '';
-        if (strlen($pass) < 6) redirect('admin.php','Password must be at least 6 characters.','error');
+        if (strlen($pass) < 8) redirect('admin.php','Password must be at least 8 characters.','error');
         $conn->prepare("UPDATE users SET password=? WHERE id=?")->execute([password_hash($pass,PASSWORD_DEFAULT),$id]);
         redirect('admin.php','Password reset successfully.');
 
